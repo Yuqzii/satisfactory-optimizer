@@ -11,6 +11,9 @@ public:
 
 	void scaleRow(std::size_t r, double x);
 
+	// Adds baseRow * x to targetRow.
+	void addScaledRow(std::size_t targetRow, std::size_t sourceRow, double x);
+
 	double& operator[](std::size_t r, std::size_t c) {
 		return data[r * cols + c];
 	}
