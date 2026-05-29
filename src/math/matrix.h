@@ -11,11 +11,11 @@ public:
 
 	void scaleRow(std::size_t r, double x);
 
-	double& operator()(std::size_t r, std::size_t c) {
+	double& operator[](std::size_t r, std::size_t c) {
 		return data[r * cols + c];
 	}
 
-	double operator()(std::size_t r, std::size_t c) const {
+	double operator[](std::size_t r, std::size_t c) const {
 		return data[r * cols + c];
 	}
 
