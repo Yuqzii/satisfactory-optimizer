@@ -7,8 +7,9 @@ namespace math {
 
 class Matrix {
 public:
-	Matrix(std::size_t rows, std::size_t cols)
-		: rows{rows}, cols{cols}, data(rows * cols) {}
+	Matrix(std::size_t rows, std::size_t cols) : rows{rows}, cols{cols}, data(rows * cols) {}
+
+	void scaleRow(std::size_t r, double x);
 
 	double& operator()(std::size_t r, std::size_t c) {
 		return data[r * cols + c];
