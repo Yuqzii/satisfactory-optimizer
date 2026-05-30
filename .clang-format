@@ -11,6 +11,10 @@ PointerAlignment: Left
 
 MaxEmptyLinesToKeep: 2
 
+AllowShortFunctionsOnASingleLine: Empty 
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
 IndentAccessModifiers: false
 AccessModifierOffset: -4
 ---
