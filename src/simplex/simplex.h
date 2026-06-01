@@ -14,4 +14,7 @@ private:
 	std::vector<double> rhs;
 	std::vector<double> contribution;
 	math::Matrix matrix;
+
+	// @return The variable with the maximum objective - contribution. -1 if none are positive.
+	std::size_t findPivotColumn() const;
 };
