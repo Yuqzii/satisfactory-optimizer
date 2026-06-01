@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <vector>
 
 #include "math/matrix.h"
@@ -16,8 +17,8 @@ private:
 	std::vector<std::size_t> basis;
 	math::Matrix matrix;
 
-	// @return The variable with the maximum objective - contribution. -1 if none are positive.
-	std::size_t findPivotColumn() const;
+	// @return The variable with the maximum objective - contribution. Nothing if none are positive.
+	std::optional<std::size_t> findPivotColumn() const;
 	// @param col The pivot column.
 	// @return The row with the minimum rhs / matrix value.
 	std::size_t findPivotRow(std::size_t col) const;

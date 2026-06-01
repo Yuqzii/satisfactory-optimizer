@@ -2,7 +2,7 @@
 
 #include <limits>
 
-std::size_t Tableau::findPivotColumn() const {
+std::optional<std::size_t> Tableau::findPivotColumn() const {
 	std::size_t best = -1;
 	double bestContrib = 0;
 
@@ -13,6 +13,9 @@ std::size_t Tableau::findPivotColumn() const {
 			bestContrib = cur;
 		}
 	}
+
+	if (best == -1)
+		return std::nullopt;
 
 	return best;
 }
