@@ -17,4 +17,7 @@ private:
 
 	// @return The variable with the maximum objective - contribution. -1 if none are positive.
 	std::size_t findPivotColumn() const;
+	// @param col The pivot column.
+	// @return The row with the minimum rhs / matrix value.
+	std::size_t findPivotRow(std::size_t col) const;
 };
