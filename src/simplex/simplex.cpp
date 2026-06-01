@@ -2,6 +2,14 @@
 
 #include <limits>
 
+void Tableau::optimize() {
+	while (const auto pivotCol = findPivotColumn()) {
+		const std::size_t pivotRow = findPivotRow(*pivotCol);
+
+		pivot(*pivotCol, pivotRow);
+	}
+}
+
 std::optional<std::size_t> Tableau::findPivotColumn() const {
 	std::size_t best = -1;
 	double bestContrib = 0;

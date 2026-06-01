@@ -10,6 +10,10 @@ public:
 	Tableau(std::size_t cols, std::size_t rows, const std::vector<double>& objective)
 	    : objective{objective}, rhs(rows), contribution(cols), basis(rows), matrix{cols, rows} {}
 
+	// Runs the simplex algorithm and stops when it finds an optimum.
+	// The state of the tableau after running this is the optimal state.
+	void optimize();
+
 private:
 	std::vector<double> objective;
 	std::vector<double> rhs;
