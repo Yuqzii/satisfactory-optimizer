@@ -12,3 +12,9 @@ add_executable(${PROJECT_NAME} "src/main.cpp")
 target_link_libraries(${PROJECT_NAME} PRIVATE
 	math
 )
+
+option(BUILD_TESTING "Build the test suite" OFF)
+if (BUILD_TESTING)
+	enable_testing()
+	add_subdirectory(tests)
+endif()
