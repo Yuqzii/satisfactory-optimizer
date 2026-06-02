@@ -33,7 +33,7 @@ std::size_t Tableau::findPivotRow(std::size_t col) const {
 	double minRatio = std::numeric_limits<double>::max();
 
 	for (std::size_t i = 0; i < rhs.size(); i++) {
-		double cur = rhs[i] / matrix[col, i];
+		double cur = rhs[i] / matrix[i, col];
 		if (cur < minRatio) {
 			best = i;
 			minRatio = cur;
@@ -48,15 +48,15 @@ void Tableau::pivot(std::size_t col, std::size_t row) {
 	basis[row] = col;
 
 	// Scale row such that [col, row] is 1.
-	matrix.scaleRow(row, 1.0 / matrix[col, row]);
-	rhs[row] /= matrix[col, row];
+	matrix.scaleRow(row, 1.0 / matrix[row, col]);
+	rhs[row] /= matrix[row, col];
 
 	// Make other values in pivot column 0.
 	for (std::size_t r = 0; r < rhs.size(); r++) {
 		if (r == row)
 			continue;
 
-		double scale = matrix[col, r] / matrix[col, row];
+		double scale = matrix[r, col] / matrix[row, col];
 		matrix.addScaledRow(r, row, -scale);
 		rhs[r] -= rhs[row] * scale;
 	}
@@ -68,6 +68,6 @@ void Tableau::calculateContribution() {
 	for (std::size_t c = 0; c < contribution.size(); c++) {
 		contribution[c] = 0;
 		for (std::size_t r = 0; r < rhs.size(); r++)
-			contribution[c] += objective[basis[r]] * matrix[c, r];
+			contribution[c] += objective[basis[r]] * matrix[r, c];
 	}
 }

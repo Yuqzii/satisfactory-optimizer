@@ -14,15 +14,15 @@ TEST(MatrixTest, ScaleRow) {
 	m.scaleRow(0, 2.0);
 	std::array<double, 3> expect{{2.0, 5.0, 6.0}};
 	for (std::size_t i = 0; i < m.getCols(); i++)
-		EXPECT_NEAR(expect[i], (m[i, 0]), eps);
+		EXPECT_NEAR(expect[i], (m[0, i]), eps);
 
 	m.scaleRow(1, 1.0 / 3.0);
 	expect = {1.0, 2.0, 3.0};
 	for (std::size_t i = 0; i < m.getCols(); i++)
-		EXPECT_NEAR(expect[i], (m[i, 1]), eps);
+		EXPECT_NEAR(expect[i], (m[1, i]), eps);
 
 	m.scaleRow(2, 0.5);
 	expect = {0.75, 3.35, 2.1};
 	for (std::size_t i = 0; i < m.getCols(); i++)
-		EXPECT_NEAR(expect[i], (m[i, 2]), eps);
+		EXPECT_NEAR(expect[i], (m[2, i]), eps);
 }
