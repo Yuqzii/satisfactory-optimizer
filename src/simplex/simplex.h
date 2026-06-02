@@ -1,5 +1,6 @@
 #pragma once
 
+#include <numeric>
 #include <optional>
 #include <vector>
 
@@ -7,8 +8,24 @@
 
 class Tableau {
 public:
-	Tableau(std::size_t cols, std::size_t rows, const std::vector<double>& objective)
-	    : objective{objective}, rhs(rows), contribution(cols), basis(rows), matrix{cols, rows} {}
+	Tableau(const std::vector<double>& objective, const std::vector<double>& rhs,
+	        const math::Matrix& constraints)
+	    : objective{objective},
+	      rhs{rhs},
+	      contribution(constraints.getCols()),
+	      basis(constraints.getRows()),
+	      matrix{constraints} {
+			  
+		// Set all the slack variables to be basic.
+		std::iota(basis.begin(), basis.end(), matrix.getCols() - matrix.getRows());
+
+		// Update contribution row.
+		for (std::size_t c = 0; c < contribution.size(); c++) {
+			contribution[c] = 0;
+			for (std::size_t r = 0; r < rhs.size(); r++)
+				contribution[c] += objective[basis[r]] * matrix[c, r];
+		}
+	}
 
 	// Runs the simplex algorithm and stops when it finds an optimum.
 	// The state of the tableau after running this is the optimal state.
