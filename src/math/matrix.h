@@ -7,7 +7,7 @@ namespace math {
 
 class Matrix {
 public:
-	Matrix(std::size_t rows, std::size_t cols) : rows{rows}, cols{cols}, data(rows * cols) {}
+	Matrix(std::size_t cols, std::size_t rows) : cols{cols}, rows{rows}, data(rows * cols) {}
 
 	std::size_t getRows() const {
 		return rows;
@@ -16,10 +16,10 @@ public:
 		return cols;
 	}
 
-	double& operator[](std::size_t r, std::size_t c) {
+	double& operator[](std::size_t c, std::size_t r) {
 		return data[r * cols + c];
 	}
-	double operator[](std::size_t r, std::size_t c) const {
+	double operator[](std::size_t c, std::size_t r) const {
 		return data[r * cols + c];
 	}
 
@@ -28,8 +28,8 @@ public:
 	void addScaledRow(std::size_t targetRow, std::size_t sourceRow, double x);
 
 private:
-	std::size_t rows = 0;
 	std::size_t cols = 0;
+	std::size_t rows = 0;
 	std::vector<double> data;
 };
 
