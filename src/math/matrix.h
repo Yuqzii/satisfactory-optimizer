@@ -8,6 +8,7 @@ namespace math {
 class Matrix {
 public:
 	Matrix(std::size_t cols, std::size_t rows) : cols{cols}, rows{rows}, data(rows * cols) {}
+	Matrix(const std::vector<std::vector<double>>& matrix);
 
 	std::size_t getRows() const {
 		return rows;
