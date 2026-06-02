@@ -15,16 +15,10 @@ public:
 	      contribution(constraints.getCols()),
 	      basis(constraints.getRows()),
 	      matrix{constraints} {
-			  
 		// Set all the slack variables to be basic.
 		std::iota(basis.begin(), basis.end(), matrix.getCols() - matrix.getRows());
 
-		// Update contribution row.
-		for (std::size_t c = 0; c < contribution.size(); c++) {
-			contribution[c] = 0;
-			for (std::size_t r = 0; r < rhs.size(); r++)
-				contribution[c] += objective[basis[r]] * matrix[c, r];
-		}
+		calculateContribution();
 	}
 
 	// Runs the simplex algorithm and stops when it finds an optimum.
@@ -45,4 +39,6 @@ private:
 	std::size_t findPivotRow(std::size_t col) const;
 
 	void pivot(std::size_t col, std::size_t row);
+
+	void calculateContribution();
 };

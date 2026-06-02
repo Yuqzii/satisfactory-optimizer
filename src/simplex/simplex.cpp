@@ -61,7 +61,10 @@ void Tableau::pivot(std::size_t col, std::size_t row) {
 		rhs[r] -= rhs[row] * scale;
 	}
 
-	// Update contribution row.
+	calculateContribution();
+}
+
+void Tableau::calculateContribution() {
 	for (std::size_t c = 0; c < contribution.size(); c++) {
 		contribution[c] = 0;
 		for (std::size_t r = 0; r < rhs.size(); r++)
