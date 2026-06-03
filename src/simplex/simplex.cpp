@@ -1,8 +1,25 @@
 #include "simplex/simplex.h"
 
 #include <limits>
+#include <numeric>
 
 namespace simplex {
+
+Tableau::Tableau(const std::vector<double>& objective, const std::vector<double>& rhs,
+                 const math::Matrix& constraints)
+    : objective{objective},
+      rhs{rhs},
+      contribution(constraints.getCols()),
+      basis(constraints.getRows()),
+      matrix{constraints} {
+	assert(objective.size() == matrix.getCols());
+	assert(rhs.size() == matrix.getRows());
+
+	// Set all the slack variables to be basic.
+	std::iota(basis.begin(), basis.end(), matrix.getCols() - matrix.getRows());
+
+	calculateContribution();
+}
 
 void Tableau::optimize() {
 	while (const auto pivotCol = findPivotColumn()) {
@@ -74,4 +91,4 @@ void Tableau::calculateContribution() {
 	}
 }
 
-}
+}  // namespace simplex
