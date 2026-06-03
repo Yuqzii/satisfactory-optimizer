@@ -35,7 +35,7 @@ private:
 
 	void calculateContribution();
 
-	FRIEND_TEST(TableauTest, findPivotColumn);
+	FRIEND_TEST(TableauTest, FindPivotColumn);
 };
 
 }  // namespace simplex
