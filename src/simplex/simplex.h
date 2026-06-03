@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <numeric>
 #include <optional>
 #include <vector>
@@ -18,6 +19,9 @@ public:
 	      contribution(constraints.getCols()),
 	      basis(constraints.getRows()),
 	      matrix{constraints} {
+		assert(objective.size() == matrix.getCols());
+		assert(rhs.size() == matrix.getRows());
+
 		// Set all the slack variables to be basic.
 		std::iota(basis.begin(), basis.end(), matrix.getCols() - matrix.getRows());
 
