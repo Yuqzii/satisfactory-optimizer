@@ -13,12 +13,16 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(tests
 	matrix_test.cpp
+	simplex_test.cpp
 )
 
 target_link_libraries(tests PRIVATE
 	GTest::gtest_main
 	math
+	simplex
 )
+
+target_compile_definitions(tests PRIVATE BUILD_TESTING)
 
 include(GoogleTest)
 gtest_discover_tests(tests)
