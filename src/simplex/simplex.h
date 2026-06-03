@@ -7,6 +7,8 @@
 #include "math/matrix.h"
 #include "utils/test_macros.h"  // IWYU pragma: keep
 
+namespace simplex {
+
 class Tableau {
 public:
 	Tableau(const std::vector<double>& objective, const std::vector<double>& rhs,
@@ -45,3 +47,5 @@ private:
 
 	FRIEND_TEST(TableauTest, findPivotColumn);
 };
+
+}  // namespace simplex

@@ -2,6 +2,8 @@
 
 #include <limits>
 
+namespace simplex {
+
 void Tableau::optimize() {
 	while (const auto pivotCol = findPivotColumn()) {
 		const std::size_t pivotRow = findPivotRow(*pivotCol);
@@ -70,4 +72,6 @@ void Tableau::calculateContribution() {
 		for (std::size_t r = 0; r < rhs.size(); r++)
 			contribution[c] += objective[basis[r]] * matrix[r, c];
 	}
+}
+
 }
