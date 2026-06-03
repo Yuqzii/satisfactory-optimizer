@@ -1,6 +1,6 @@
 #include "math/matrix.h"
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 constexpr double eps = 1e-9;
 

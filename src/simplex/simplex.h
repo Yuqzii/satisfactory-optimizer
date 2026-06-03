@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "math/matrix.h"
+#include "utils/test_macros.h"  // IWYU pragma: keep
 
 class Tableau {
 public:
@@ -41,4 +42,6 @@ private:
 	void pivot(std::size_t col, std::size_t row);
 
 	void calculateContribution();
+
+	FRIEND_TEST(TableauTest, findPivotColumn);
 };
