@@ -5,6 +5,7 @@ add_library(simplex STATIC
 target_include_directories(simplex PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 target_link_libraries(simplex PRIVATE
 	math
+	utils
 )
 
 if (BUILD_TESTING)
