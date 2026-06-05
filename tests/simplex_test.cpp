@@ -21,6 +21,17 @@ struct TableauPivotTestCase {
 	math::Matrix matrix;
 };
 
+void PrintTo(const TableauPivotTestCase& testCase, std::ostream* os) {
+	const auto toStr = [](std::size_t a) -> std::optional<std::string> {
+		return std::to_string(a);
+	};
+
+	const auto col = testCase.expectedCol.and_then(toStr).value_or("none");
+
+	*os << '"' << testCase.name << "\" (Expected Row: " << testCase.expectedRow
+	    << ", Col: " << col << ')';
+}
+
 class TableauPivotTest : public ::testing::TestWithParam<TableauPivotTestCase> {};
 
 TEST_P(TableauPivotTest, FindPivot) {
