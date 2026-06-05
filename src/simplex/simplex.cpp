@@ -8,7 +8,8 @@ namespace simplex {
 Tableau::Tableau(
     const std::vector<double>& objective, const std::vector<double>& rhs,
     const math::Matrix& constraints
-) : objective{objective},
+)
+    : objective{objective},
       rhs{rhs},
       contribution(constraints.getCols()),
       basis(constraints.getRows()),
@@ -53,6 +54,9 @@ std::size_t Tableau::findPivotRow(std::size_t col) const {
 	double minRatio = std::numeric_limits<double>::max();
 
 	for (std::size_t i = 0; i < rhs.size(); i++) {
+		if (matrix[i, col] <= 0)
+			continue;
+
 		double cur = rhs[i] / matrix[i, col];
 		if (cur < minRatio) {
 			best = i;
