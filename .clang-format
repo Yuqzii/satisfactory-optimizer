@@ -18,4 +18,5 @@ AllowShortLoopsOnASingleLine: false
 IndentAccessModifiers: false
 AccessModifierOffset: -4
 IndentPPDirectives: AfterHash
+AlignAfterOpenBracket: BlockIndent
 ---

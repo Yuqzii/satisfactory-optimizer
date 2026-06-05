@@ -7,7 +7,7 @@ namespace math {
 
 class Matrix {
 public:
-	Matrix(std::size_t rows, std::size_t cols) :  rows{rows}, cols{cols}, data(rows * cols) {}
+	Matrix(std::size_t rows, std::size_t cols) : rows{rows}, cols{cols}, data(rows * cols) {}
 	Matrix(const std::vector<std::vector<double>>& matrix);
 
 	std::size_t getRows() const {

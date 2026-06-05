@@ -5,9 +5,10 @@
 
 namespace simplex {
 
-Tableau::Tableau(const std::vector<double>& objective, const std::vector<double>& rhs,
-                 const math::Matrix& constraints)
-    : objective{objective},
+Tableau::Tableau(
+    const std::vector<double>& objective, const std::vector<double>& rhs,
+    const math::Matrix& constraints
+) : objective{objective},
       rhs{rhs},
       contribution(constraints.getCols()),
       basis(constraints.getRows()),
