@@ -4,7 +4,6 @@
 
 #include <optional>
 
-#include "gtest/gtest.h"
 #include "math/matrix.h"
 
 namespace simplex {
