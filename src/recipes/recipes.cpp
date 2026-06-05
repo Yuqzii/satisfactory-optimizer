@@ -31,28 +31,49 @@ std::map<std::string, Recipe> getRecipes() {
 	}
 	file.close();
 
+
+	// iterate through sfDocs.json
 	for (int i = 0; i < docs.size(); i++) {
 		if (!docs[i].contains("NativeClass"))
 			continue;
 		if (docs[i]["NativeClass"] != "/Script/CoreUObject.Class'/Script/FactoryGame.FGRecipe'")
 			continue;
 
-		// iterate through alle reicpes
+		// iterate through alle recipes
 		auto recipeArr = docs[i]["Classes"];
 		for (int j = 0; j < recipeArr.size(); j++) {
 			std::string recipeName;
-			RecipeItem input;
-			RecipeItem output;
+			std::vector<RecipeItem> input;
+			std::vector<RecipeItem> output;
 			double manDur;
 
-			for (auto it = recipeArr[j].begin(); it != recipeArr[j].end(); ++it) {  // 1 recipe
+			for (auto it = recipeArr[j].begin(); it != recipeArr[j].end(); ++it) {
 				auto k = it.key();
 				auto v = it.value();
 				static const std::unordered_set<std::string> AllowedKeys{
 				    "mDisplayName", "mIngredients", "mProduct", "mManufactoringDuration"};
 				if (!AllowedKeys.count(k))
 					continue;
+
+				if (k == "mDisplayName") {
+					recipeName = v;
+				} else if (k == "mManufactoringDuration") {
+					std::string manDurStr = v;
+					manDur = std::stoi(manDurStr);
+				} else if (k == "mIngredients") {
+					// parse name(s) of ingredient(s)
+					// parse amount of the ingredient(s)
+				} else if (k == "mProduct") {
+					// parse name(s) of ouput(s)
+					// parse amount of the output(s)
+				}
 			}
+			Recipe currentRecipe;
+			currentRecipe.ingredients = input;
+			currentRecipe.products = output;
+			currentRecipe.duration = manDur;
+			parsedRecipes[recipeName] = std::move(currentRecipe);
 		}
+		break;
 	}
 }
