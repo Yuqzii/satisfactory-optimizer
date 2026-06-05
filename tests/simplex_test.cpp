@@ -10,7 +10,7 @@
 namespace simplex {
 
 struct TableauPivotTestCase {
-	std::size_t expectedRow;
+	std::optional<std::size_t> expectedRow;
 	std::optional<std::size_t> expectedCol;
 
 	std::string name;
@@ -27,9 +27,10 @@ void PrintTo(const TableauPivotTestCase& testCase, std::ostream* os) {
 	};
 
 	const auto col = testCase.expectedCol.and_then(toStr).value_or("none");
+	const auto row = testCase.expectedRow.and_then(toStr).value_or("none");
 
-	*os << '"' << testCase.name << "\" (Expected Row: " << testCase.expectedRow
-	    << ", Col: " << col << ')';
+	*os << '"' << testCase.name << "\" (Expected Row: " << row << ", Col: " << col
+	    << ')';
 }
 
 class TableauPivotTest : public ::testing::TestWithParam<TableauPivotTestCase> {};
@@ -59,7 +60,14 @@ TEST_P(TableauPivotTest, FindPivot) {
 
 	ASSERT_EQ(testCase.expectedCol.value(), col.value());
 
-	const std::size_t row = tableau.findPivotRow(col.value());
+	const auto row = tableau.findPivotRow(col.value());
+	ASSERT_EQ(testCase.expectedRow.has_value(), row.has_value());
+
+	if (!row.has_value()) {
+		SUCCEED();
+		return;
+	}
+
 	EXPECT_EQ(testCase.expectedRow, row);
 }
 

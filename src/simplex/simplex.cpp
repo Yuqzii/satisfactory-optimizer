@@ -23,12 +23,17 @@ Tableau::Tableau(
 	calculateContribution();
 }
 
-void Tableau::optimize() {
+std::expected<void, Tableau::Error> Tableau::optimize() {
 	while (const auto pivotCol = findPivotColumn()) {
-		const std::size_t pivotRow = findPivotRow(*pivotCol);
+		const auto pivotRow = findPivotRow(pivotCol.value());
 
-		pivot(*pivotCol, pivotRow);
+		if (!pivotRow.has_value())
+			return std::unexpected(Tableau::Error::Unbounded);
+
+		pivot(pivotCol.value(), pivotRow.value());
 	}
+
+	return {};
 }
 
 std::optional<std::size_t> Tableau::findPivotColumn() const {
@@ -49,7 +54,7 @@ std::optional<std::size_t> Tableau::findPivotColumn() const {
 	return best;
 }
 
-std::size_t Tableau::findPivotRow(std::size_t col) const {
+std::optional<std::size_t> Tableau::findPivotRow(std::size_t col) const {
 	std::size_t best = -1;
 	double minRatio = std::numeric_limits<double>::max();
 
@@ -63,6 +68,9 @@ std::size_t Tableau::findPivotRow(std::size_t col) const {
 			minRatio = cur;
 		}
 	}
+
+	if (best == -1)
+		return std::nullopt;
 
 	return best;
 }
