@@ -97,6 +97,18 @@ INSTANTIATE_TEST_SUITE_P(
             }},
         },
         TableauPivotTestCase{
+            .expectedRow = std::nullopt,
+            .expectedCol = std::nullopt,
+            .name = "AlreadyOptimal",
+            .objective{7, 6, 0, 0},
+            .rhs{3, 2},
+            .basis{1, 0},
+            .matrix{{
+                {0, 1, 3.0 / 8.0, -1.0 / 4.0},
+                {1, 0, -1.0 / 4.0, 1.0 / 2.0},
+            }},
+        },
+        TableauPivotTestCase{
             .expectedRow = 0,
             .expectedCol = 0,
             .name = "IgnoreNegAndZeroFindingRow",
