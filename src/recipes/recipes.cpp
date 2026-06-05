@@ -12,6 +12,29 @@
 
 using json = nlohmann::json;
 
+void identifyItem(std::string& k, std::string& v, std::vector<RecipeItem>& list) {
+	std::string mainStr = v;
+	std::string factoryGame = "FactoryGame/";
+	std::string amountStr = "Amount=";
+
+	std::size_t factoryGameIndx = mainStr.find(factoryGame);
+	std::size_t amountIndx = mainStr.find(amountStr);
+
+	while (factoryGameIndx != std::string::npos) {
+		std::size_t slash1 = mainStr.find('/', factoryGameIndx + factoryGame.length());
+		std::size_t slash2 = mainStr.find('/', slash1 + 1);
+		std::size_t slash3 = mainStr.find('/', slash2 + 1);
+
+		std::string itemName = mainStr.substr(slash2 + 1, slash3 - slash2 - 1);
+		int amount = std::stoi(mainStr.substr(amountIndx + amountStr.length()));
+
+		RecipeItem currItem;
+		currItem.name = itemName;
+		currItem.amount = amount;
+		list.push_back(currItem);
+	}
+}
+
 std::map<std::string, Recipe> getRecipes() {
 	std::map<std::string, Recipe> parsedRecipes;
 
@@ -48,8 +71,8 @@ std::map<std::string, Recipe> getRecipes() {
 			double manDur;
 
 			for (auto it = recipeArr[j].begin(); it != recipeArr[j].end(); ++it) {
-				auto k = it.key();
-				auto v = it.value();
+				std::string k = it.key();
+				std::string v = it.value().get<std::string>();
 				static const std::unordered_set<std::string> AllowedKeys{
 				    "mDisplayName", "mIngredients", "mProduct", "mManufactoringDuration"};
 				if (!AllowedKeys.count(k))
@@ -59,13 +82,11 @@ std::map<std::string, Recipe> getRecipes() {
 					recipeName = v;
 				} else if (k == "mManufactoringDuration") {
 					std::string manDurStr = v;
-					manDur = std::stoi(manDurStr);
+					manDur = std::stod(manDurStr);
 				} else if (k == "mIngredients") {
-					// parse name(s) of ingredient(s)
-					// parse amount of the ingredient(s)
+					identifyItem(k, v, input);
 				} else if (k == "mProduct") {
-					// parse name(s) of ouput(s)
-					// parse amount of the output(s)
+					identifyItem(k, v, output);
 				}
 			}
 			Recipe currentRecipe;
@@ -76,4 +97,5 @@ std::map<std::string, Recipe> getRecipes() {
 		}
 		break;
 	}
+	return parsedRecipes;
 }

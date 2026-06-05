@@ -13,3 +13,5 @@ struct Recipe {
 	std::vector<RecipeItem> ingredients;
 	std::vector<RecipeItem> products;
 };
+
+void identifyItem(std::string& k, std::string& v, std::vector<RecipeItem>& list);
