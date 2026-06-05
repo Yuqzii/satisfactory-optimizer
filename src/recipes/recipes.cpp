@@ -1,4 +1,4 @@
-#include "recipes/recipes.h"
+#include "recipes.h"
 
 #include <fstream>
 #include <iostream>
@@ -20,7 +20,7 @@ void identifyItem(std::string& k, std::string& v, std::vector<RecipeItem>& list)
 	std::size_t factoryGameIndx = mainStr.find(factoryGame);
 	std::size_t amountIndx = mainStr.find(amountStr);
 
-	while (factoryGameIndx != std::string::npos) {
+	while (factoryGameIndx != std::string::npos && amountIndx != std::string::npos) {
 		std::size_t slash1 = mainStr.find('/', factoryGameIndx + factoryGame.length());
 		std::size_t slash2 = mainStr.find('/', slash1 + 1);
 		std::size_t slash3 = mainStr.find('/', slash2 + 1);
@@ -32,17 +32,23 @@ void identifyItem(std::string& k, std::string& v, std::vector<RecipeItem>& list)
 		currItem.name = itemName;
 		currItem.amount = amount;
 		list.push_back(currItem);
+
+		// update indexes
+		factoryGameIndx = mainStr.find(factoryGame, factoryGameIndx + factoryGame.length());
+		amountIndx = mainStr.find(amountStr, amountIndx + amountStr.length());
 	}
 }
 
 std::map<std::string, Recipe> getRecipes() {
 	std::map<std::string, Recipe> parsedRecipes;
 
-	// open sfDocs.json file
-	std::ifstream file("../../sfDocs.json");
+	// open sfData.json file
+	std::ifstream file("../sfData.json");
 	if (!file.is_open()) {
-		std::cerr << "Failed to open sfDocs.json" << std::endl;
+		std::cerr << "Failed to open sfData.json" << std::endl;
 		return parsedRecipes;
+	} else {
+		std::cerr << "sfData.json opened successfully" << std::endl;
 	}
 
 	json docs;
@@ -55,7 +61,7 @@ std::map<std::string, Recipe> getRecipes() {
 	file.close();
 
 
-	// iterate through sfDocs.json
+	// iterate through sfData.json
 	for (int i = 0; i < docs.size(); i++) {
 		if (!docs[i].contains("NativeClass"))
 			continue;
@@ -68,7 +74,7 @@ std::map<std::string, Recipe> getRecipes() {
 			std::string recipeName;
 			std::vector<RecipeItem> input;
 			std::vector<RecipeItem> output;
-			double manDur;
+			double manDur = 0.0;
 
 			for (auto it = recipeArr[j].begin(); it != recipeArr[j].end(); ++it) {
 				std::string k = it.key();
