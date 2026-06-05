@@ -76,7 +76,7 @@ INSTANTIATE_TEST_SUITE_P(
         TableauPivotTestCase{
             .expectedRow = 1,
             .expectedCol = 0,
-            .name = "InitialState",
+            .name = "Initial state",
             .objective{7, 6, 0, 0},
             .rhs{16, 12},
             .matrix{{
@@ -87,7 +87,7 @@ INSTANTIATE_TEST_SUITE_P(
         TableauPivotTestCase{
             .expectedRow = 0,
             .expectedCol = 1,
-            .name = "AfterOneIteration",
+            .name = "After one iteration",
             .objective{7, 6, 0, 0},
             .rhs{8, 4},
             .basis{2, 0},
@@ -99,7 +99,7 @@ INSTANTIATE_TEST_SUITE_P(
         TableauPivotTestCase{
             .expectedRow = std::nullopt,
             .expectedCol = std::nullopt,
-            .name = "AlreadyOptimal",
+            .name = "Already optimal",
             .objective{7, 6, 0, 0},
             .rhs{3, 2},
             .basis{1, 0},
@@ -111,7 +111,7 @@ INSTANTIATE_TEST_SUITE_P(
         TableauPivotTestCase{
             .expectedRow = 0,
             .expectedCol = 0,
-            .name = "IgnoreNegAndZeroFindingRow",
+            .name = "Ignore non-positive when finding row",
             .objective{5.0, 2.0, 0, 0, 0},
             .rhs{4, 6, 5},
             .matrix{{
@@ -123,7 +123,7 @@ INSTANTIATE_TEST_SUITE_P(
         TableauPivotTestCase{
             .expectedRow = std::nullopt,
             .expectedCol = 1,
-            .name = "NoRowWhenNoPositive",
+            .name = "No row returned when no positive",
             .objective{2.0, 5.0, 0, 0, 0},
             .rhs{4, 6, 5},
             .matrix{{
@@ -132,8 +132,7 @@ INSTANTIATE_TEST_SUITE_P(
                 {0.0, -2.0, 0.0, 0.0, 1.0},
             }},
         }
-    ),
-    [](const ::testing::TestParamInfo<TableauPivotTestCase>& info) { return info.param.name; }
+    )
 );
 
 }  // namespace simplex
