@@ -29,8 +29,7 @@ void PrintTo(const TableauPivotTestCase& testCase, std::ostream* os) {
 	const auto col = testCase.expectedCol.and_then(toStr).value_or("none");
 	const auto row = testCase.expectedRow.and_then(toStr).value_or("none");
 
-	*os << '"' << testCase.name << "\" (Expected Row: " << row << ", Col: " << col
-	    << ')';
+	*os << '"' << testCase.name << "\" (Expected Row: " << row << ", Col: " << col << ')';
 }
 
 class TableauPivotTest : public ::testing::TestWithParam<TableauPivotTestCase> {};
@@ -107,6 +106,18 @@ INSTANTIATE_TEST_SUITE_P(
                 {2.0, 1.0, 1.0, 0.0, 0.0},
                 {-1.0, 3.0, 0.0, 1.0, 0.0},
                 {0.0, 2.0, 0.0, 0.0, 1.0},
+            }},
+        },
+        TableauPivotTestCase{
+            .expectedRow = std::nullopt,
+            .expectedCol = 1,
+            .name = "NoRowWhenNoPositive",
+            .objective{2.0, 5.0, 0, 0, 0},
+            .rhs{4, 6, 5},
+            .matrix{{
+                {2.0, -1.0, 1.0, 0.0, 0.0},
+                {-1.0, -3.0, 0.0, 1.0, 0.0},
+                {0.0, -2.0, 0.0, 0.0, 1.0},
             }},
         }
     ),
