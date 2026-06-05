@@ -65,6 +65,18 @@ INSTANTIATE_TEST_SUITE_P(
                 {2, 4, 1, 0},
                 {3, 2, 0, 1},
             }},
+        },
+        TableauPivotTestCase{
+            .expectedRow = 0,
+            .expectedCol = 1,
+            .name = "AfterOneIteration",
+            .objective{7, 6, 0, 0},
+            .rhs{8, 4},
+            .basis{2, 0},
+            .matrix{{
+                {0, 8.0 / 3.0, 1, -2.0 / 3.0},
+                {1, 2.0 / 3.0, 0, 1.0 / 3.0},
+            }},
         }
     ),
     [](const ::testing::TestParamInfo<TableauPivotTestCase>& info) { return info.param.name; }
