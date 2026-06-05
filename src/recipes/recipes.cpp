@@ -7,6 +7,7 @@
 #include <nlohmann/json.hpp>
 #include <sstream>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 using json = nlohmann::json;
@@ -35,5 +36,23 @@ std::map<std::string, Recipe> getRecipes() {
 			continue;
 		if (docs[i]["NativeClass"] != "/Script/CoreUObject.Class'/Script/FactoryGame.FGRecipe'")
 			continue;
+
+		// iterate through alle reicpes
+		auto recipeArr = docs[i]["Classes"];
+		for (int j = 0; j < recipeArr.size(); j++) {
+			std::string recipeName;
+			RecipeItem input;
+			RecipeItem output;
+			double manDur;
+
+			for (auto it = recipeArr[j].begin(); it != recipeArr[j].end(); ++it) {  // 1 recipe
+				auto k = it.key();
+				auto v = it.value();
+				static const std::unordered_set<std::string> AllowedKeys{
+				    "mDisplayName", "mIngredients", "mProduct", "mManufactoringDuration"};
+				if (!AllowedKeys.count(k))
+					continue;
+			}
+		}
 	}
 }
