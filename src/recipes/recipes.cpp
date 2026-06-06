@@ -1,5 +1,6 @@
 #include "recipes.h"
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -85,6 +86,7 @@ std::map<std::string, Recipe> getRecipes() {
 					continue;
 
 				if (k == "mDisplayName") {
+					v.erase(std::remove(v.begin(), v.end(), ' '), v.end());
 					recipeName = v;
 				} else if (k == "mManufactoringDuration") {
 					std::string manDurStr = v;
