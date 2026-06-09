@@ -13,6 +13,7 @@ add_subdirectory(src/recipes)
 add_executable(${PROJECT_NAME} "src/main.cpp")
 target_link_libraries(${PROJECT_NAME} PRIVATE
 	math
+	recipes
 )
 
 option(BUILD_TESTING "Build the test suite" OFF)
