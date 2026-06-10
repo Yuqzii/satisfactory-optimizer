@@ -64,10 +64,6 @@ void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& recipeAr
 		for (auto it = recipeArr[j].begin(); it != recipeArr[j].end(); ++it) {
 			const std::string jsonKey = it.key();
 			const std::string jsonValue = it.value().get<std::string>();
-			static const std::unordered_set<std::string> AllowedKeys{
-			    "mDisplayName", "mIngredients", "mProduct", "mManufactoringDuration"};
-			if (!AllowedKeys.count(jsonKey))
-				continue;
 
 			if (jsonKey == "mDisplayName") {
 				recipeName = jsonValue;
