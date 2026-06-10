@@ -69,7 +69,7 @@ std::map<std::string, Recipe> getRecipes(std::string ans) {
 
 		// iterate through alle recipes
 		auto recipeArr = docs[i]["Classes"];
-		for (int j = 0; j < recipeArr.size(); j++) {
+		for (std::size_t j = 0; j < recipeArr.size(); j++) {
 			std::string recipeName;
 			std::vector<RecipeItem> input;
 			std::vector<RecipeItem> output;
