@@ -39,9 +39,9 @@ std::map<std::string, Recipe> getRecipes(std::string ans) {
 
 	// iterate through sfData.json
 	for (int i = 0; i < docs.size(); i++) {
-		if (!docs[i].contains("NativeClass"))
-			continue;
-		if (docs[i]["NativeClass"] != "/Script/CoreUObject.Class'/Script/FactoryGame.FGRecipe'")
+		auto it = docs[i].find("NativeClass");
+		if (it == docs[i].end() ||
+		    it.value() != "/Script/CoreUObject.Class'/Script/FactoryGame.FGRecipe'")
 			continue;
 
 		extractRecipes(parsedRecipes, docs, i);
