@@ -14,21 +14,20 @@
 
 using json = nlohmann::json;
 
-void identifyItem(std::string& k, std::string& v, std::vector<RecipeItem>& list) {
-	std::string mainStr = v;
+void identifyItems(std::string& stringVal, std::vector<RecipeItem>& list) {
 	std::string factoryGameStr = "FactoryGame/";
 	std::string amountStr = "Amount=";
 
-	std::size_t factoryGameIndx = mainStr.find(factoryGameStr);
-	std::size_t amountIndx = mainStr.find(amountStr);
+	std::size_t factoryGameIndx = stringVal.find(factoryGameStr);
+	std::size_t amountIndx = stringVal.find(amountStr);
 
 	while (factoryGameIndx != std::string::npos && amountIndx != std::string::npos) {
-		std::size_t dotIndx = mainStr.find('.', factoryGameIndx);
-		std::size_t fileSlash = mainStr.rfind('/', dotIndx);
-		std::size_t folderSlash = mainStr.rfind('/', fileSlash - 1);
+		std::size_t dotIndx = stringVal.find('.', factoryGameIndx);
+		std::size_t fileSlash = stringVal.rfind('/', dotIndx);
+		std::size_t folderSlash = stringVal.rfind('/', fileSlash - 1);
 
-		std::string itemName = mainStr.substr(folderSlash + 1, fileSlash - folderSlash - 1);
-		int amount = std::stoi(mainStr.substr(amountIndx + amountStr.length()));
+		std::string itemName = stringVal.substr(folderSlash + 1, fileSlash - folderSlash - 1);
+		int amount = std::stoi(stringVal.substr(amountIndx + amountStr.length()));
 
 		RecipeItem currItem;
 		currItem.name = itemName;
@@ -36,8 +35,8 @@ void identifyItem(std::string& k, std::string& v, std::vector<RecipeItem>& list)
 		list.push_back(currItem);
 
 		// update indexes
-		factoryGameIndx = mainStr.find(factoryGameStr, factoryGameIndx + factoryGameStr.length());
-		amountIndx = mainStr.find(amountStr, amountIndx + amountStr.length());
+		factoryGameIndx = stringVal.find(factoryGameStr, factoryGameIndx + factoryGameStr.length());
+		amountIndx = stringVal.find(amountStr, amountIndx + amountStr.length());
 	}
 }
 
