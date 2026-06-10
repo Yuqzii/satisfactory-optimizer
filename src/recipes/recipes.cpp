@@ -29,10 +29,7 @@ void identifyItems(std::string& stringVal, std::vector<RecipeItem>& list) {
 		const std::string itemName = stringVal.substr(folderSlash + 1, fileSlash - folderSlash - 1);
 		const int amount = std::stoi(stringVal.substr(amountIndx + amountStr.length()));
 
-		RecipeItem currItem;
-		currItem.name = itemName;
-		currItem.amount = amount;
-		list.push_back(currItem);
+		list.push_back({amount, itemName});
 
 		// update indexes
 		factoryGameIndx = stringVal.find(factoryGameStr, factoryGameIndx + factoryGameStr.length());
