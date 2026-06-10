@@ -93,11 +93,8 @@ std::map<std::string, Recipe> getRecipes(std::string ans) {
 					identifyItems(jsonValue, output);
 				}
 			}
-			Recipe currentRecipe;
-			currentRecipe.ingredients = input;
-			currentRecipe.products = output;
-			currentRecipe.duration = manDur;
-			parsedRecipes[recipeName] = std::move(currentRecipe);
+
+			parsedRecipes[recipeName] = {manDur, input, output};
 		}
 		break;
 	}
