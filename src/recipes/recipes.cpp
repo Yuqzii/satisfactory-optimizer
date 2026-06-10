@@ -14,7 +14,7 @@
 
 using json = nlohmann::json;
 
-void identifyItems(std::string& stringVal, std::vector<RecipeItem>& list) {
+void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list) {
 	static const std::string factoryGameStr = "FactoryGame/";
 	static const std::string amountStr = "Amount=";
 
@@ -76,23 +76,21 @@ std::map<std::string, Recipe> getRecipes(std::string ans) {
 			double manDur = 0.0;
 
 			for (auto it = recipeArr[j].begin(); it != recipeArr[j].end(); ++it) {
-				std::string k = it.key();
-				std::string v = it.value().get<std::string>();
+				const std::string jsonKey = it.key();
+				const std::string jsonValue = it.value().get<std::string>();
 				static const std::unordered_set<std::string> AllowedKeys{
 				    "mDisplayName", "mIngredients", "mProduct", "mManufactoringDuration"};
-				if (!AllowedKeys.count(k))
+				if (!AllowedKeys.count(jsonKey))
 					continue;
 
-				if (k == "mDisplayName") {
-					v.erase(std::remove(v.begin(), v.end(), ' '), v.end());
-					recipeName = v;
-				} else if (k == "mManufactoringDuration") {
-					std::string manDurStr = v;
-					manDur = std::stod(manDurStr);
-				} else if (k == "mIngredients") {
-					identifyItem(k, v, input);
-				} else if (k == "mProduct") {
-					identifyItem(k, v, output);
+				if (jsonKey == "mDisplayName") {
+					recipeName = jsonValue;
+				} else if (jsonKey == "mManufactoringDuration") {
+					manDur = std::stod(jsonValue);
+				} else if (jsonKey == "mIngredients") {
+					identifyItems(jsonValue, input);
+				} else if (jsonKey == "mProduct") {
+					identifyItems(jsonValue, output);
 				}
 			}
 			Recipe currentRecipe;
