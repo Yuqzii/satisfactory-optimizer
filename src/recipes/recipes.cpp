@@ -105,5 +105,25 @@ std::map<std::string, Recipe> getRecipes() {
 		}
 		break;
 	}
+
+	// print out recipes
+	for (auto it = parsedRecipes.begin(); it != parsedRecipes.end(); ++it) {
+		std::cout << it->first << std::endl;
+
+		std::cout << "Ingredient(s): " << std::endl;
+		for (int i = 0; i < it->second.ingredients.size(); i++) {
+			std::cout << "	item - " << it->second.ingredients[i].name << ' ';
+			std::cout << it->second.ingredients[i].amount << std::endl;
+		}
+		std::cout << "Product(s): " << std::endl;
+		for (int i = 0; i < it->second.products.size(); i++) {
+			std::cout << "	item - " << it->second.products[i].name << ' ';
+			std::cout << it->second.products[i].amount << std::endl;
+		}
+
+		std::cout << "Manufactoring duration: " << it->second.duration << std::endl;
+
+		std::cout << "—————————————————————————————" << std::endl;
+	}
 	return parsedRecipes;
 }
