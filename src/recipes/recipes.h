@@ -15,6 +15,4 @@ struct Recipe {
 	std::vector<RecipeItem> products;
 };
 
-void identifyItem(std::string& k, std::string& v, std::vector<RecipeItem>& list);
-
 std::map<std::string, Recipe> getRecipes(std::string filePath);
