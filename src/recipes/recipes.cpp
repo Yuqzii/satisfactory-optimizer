@@ -27,7 +27,7 @@ std::map<std::string, Recipe> getRecipes(std::string ans) {
 		std::cerr << "failed to find or open " << jsonFilePath.filename() << '\n' << std::endl;
 		return parsedRecipes;
 	} else {
-		std::cerr << jsonFilePath.filename() << "opened successfully\n" << std::endl;
+		std::cout << jsonFilePath.filename() << " opened successfully\n" << std::endl;
 	}
 
 	json docs;
