@@ -17,4 +17,4 @@ struct Recipe {
 
 void identifyItem(std::string& k, std::string& v, std::vector<RecipeItem>& list);
 
-std::map<std::string, Recipe> getRecipes();
+std::map<std::string, Recipe> getRecipes(std::string filePath);

@@ -1,6 +1,7 @@
 #include "recipes.h"
 
 #include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -40,16 +41,17 @@ void identifyItem(std::string& k, std::string& v, std::vector<RecipeItem>& list)
 	}
 }
 
-std::map<std::string, Recipe> getRecipes() {
+std::map<std::string, Recipe> getRecipes(std::string ans) {
 	std::map<std::string, Recipe> parsedRecipes;
 
-	// open sfData.json file
-	std::ifstream file("../sfData.json");
+	// open the .json file
+	std::filesystem::path jsonFilePath(ans);
+	std::ifstream file(jsonFilePath);
 	if (!file.is_open()) {
-		std::cerr << "Failed to open sfData.json" << std::endl;
+		std::cerr << "failed to find or open " << jsonFilePath.filename() << '\n' << std::endl;
 		return parsedRecipes;
 	} else {
-		std::cerr << "sfData.json opened successfully" << std::endl;
+		std::cerr << jsonFilePath.filename() << "opened successfully\n" << std::endl;
 	}
 
 	json docs;
