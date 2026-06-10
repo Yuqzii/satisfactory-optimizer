@@ -15,19 +15,19 @@
 using json = nlohmann::json;
 
 void identifyItems(std::string& stringVal, std::vector<RecipeItem>& list) {
-	std::string factoryGameStr = "FactoryGame/";
-	std::string amountStr = "Amount=";
+	static const std::string factoryGameStr = "FactoryGame/";
+	static const std::string amountStr = "Amount=";
 
 	std::size_t factoryGameIndx = stringVal.find(factoryGameStr);
 	std::size_t amountIndx = stringVal.find(amountStr);
 
 	while (factoryGameIndx != std::string::npos && amountIndx != std::string::npos) {
-		std::size_t dotIndx = stringVal.find('.', factoryGameIndx);
-		std::size_t fileSlash = stringVal.rfind('/', dotIndx);
-		std::size_t folderSlash = stringVal.rfind('/', fileSlash - 1);
+		const std::size_t dotIndx = stringVal.find('.', factoryGameIndx);
+		const std::size_t fileSlash = stringVal.rfind('/', dotIndx);
+		const std::size_t folderSlash = stringVal.rfind('/', fileSlash - 1);
 
-		std::string itemName = stringVal.substr(folderSlash + 1, fileSlash - folderSlash - 1);
-		int amount = std::stoi(stringVal.substr(amountIndx + amountStr.length()));
+		const std::string itemName = stringVal.substr(folderSlash + 1, fileSlash - folderSlash - 1);
+		const int amount = std::stoi(stringVal.substr(amountIndx + amountStr.length()));
 
 		RecipeItem currItem;
 		currItem.name = itemName;
