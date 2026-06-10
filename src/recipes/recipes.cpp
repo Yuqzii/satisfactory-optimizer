@@ -99,7 +99,7 @@ void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list) 
 		const std::string itemName = stringVal.substr(folderSlash + 1, fileSlash - folderSlash - 1);
 		const int amount = std::stoi(stringVal.substr(amountIndx + amountStr.length()));
 
-		list.push_back({amount, itemName});
+		list.emplace_back(amount, itemName);
 
 		// update indexes
 		factoryGameIndx = stringVal.find(factoryGameStr, factoryGameIndx + factoryGameStr.length());
