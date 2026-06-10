@@ -14,7 +14,7 @@
 
 using json = nlohmann::json;
 
-void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& docs, int i);
+void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& recipeArr);
 void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list);
 
 std::map<std::string, Recipe> getRecipes(std::string ans) {
@@ -47,14 +47,14 @@ std::map<std::string, Recipe> getRecipes(std::string ans) {
 		    it.value() != "/Script/CoreUObject.Class'/Script/FactoryGame.FGRecipe'")
 			continue;
 
-		extractRecipes(parsedRecipes, docs, i);
+		json recipeArr = docs[i]["Classes"];
+		extractRecipes(parsedRecipes, recipeArr);
 	}
 
 	return parsedRecipes;
 }
 
-void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& docs, int i) {
-	auto recipeArr = docs[i]["Classes"];
+void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& recipeArr) {
 	for (std::size_t j = 0; j < recipeArr.size(); j++) {
 		std::string recipeName;
 		std::vector<RecipeItem> input;
