@@ -14,6 +14,9 @@
 
 using json = nlohmann::json;
 
+void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& docs, int i);
+void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list);
+
 std::map<std::string, Recipe> getRecipes(std::string ans) {
 	std::map<std::string, Recipe> parsedRecipes;
 
