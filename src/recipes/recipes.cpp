@@ -14,31 +14,6 @@
 
 using json = nlohmann::json;
 
-void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& docs, int i);
-
-void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list) {
-	static const std::string factoryGameStr = "FactoryGame/";
-	static const std::string amountStr = "Amount=";
-
-	std::size_t factoryGameIndx = stringVal.find(factoryGameStr);
-	std::size_t amountIndx = stringVal.find(amountStr);
-
-	while (factoryGameIndx != std::string::npos && amountIndx != std::string::npos) {
-		const std::size_t dotIndx = stringVal.find('.', factoryGameIndx);
-		const std::size_t fileSlash = stringVal.rfind('/', dotIndx);
-		const std::size_t folderSlash = stringVal.rfind('/', fileSlash - 1);
-
-		const std::string itemName = stringVal.substr(folderSlash + 1, fileSlash - folderSlash - 1);
-		const int amount = std::stoi(stringVal.substr(amountIndx + amountStr.length()));
-
-		list.push_back({amount, itemName});
-
-		// update indexes
-		factoryGameIndx = stringVal.find(factoryGameStr, factoryGameIndx + factoryGameStr.length());
-		amountIndx = stringVal.find(amountStr, amountIndx + amountStr.length());
-	}
-}
-
 std::map<std::string, Recipe> getRecipes(std::string ans) {
 	std::map<std::string, Recipe> parsedRecipes;
 
@@ -103,5 +78,28 @@ void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& docs, in
 		}
 
 		parsedRecipes[recipeName] = {manDur, input, output};
+	}
+}
+
+void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list) {
+	static const std::string factoryGameStr = "FactoryGame/";
+	static const std::string amountStr = "Amount=";
+
+	std::size_t factoryGameIndx = stringVal.find(factoryGameStr);
+	std::size_t amountIndx = stringVal.find(amountStr);
+
+	while (factoryGameIndx != std::string::npos && amountIndx != std::string::npos) {
+		const std::size_t dotIndx = stringVal.find('.', factoryGameIndx);
+		const std::size_t fileSlash = stringVal.rfind('/', dotIndx);
+		const std::size_t folderSlash = stringVal.rfind('/', fileSlash - 1);
+
+		const std::string itemName = stringVal.substr(folderSlash + 1, fileSlash - folderSlash - 1);
+		const int amount = std::stoi(stringVal.substr(amountIndx + amountStr.length()));
+
+		list.push_back({amount, itemName});
+
+		// update indexes
+		factoryGameIndx = stringVal.find(factoryGameStr, factoryGameIndx + factoryGameStr.length());
+		amountIndx = stringVal.find(amountStr, amountIndx + amountStr.length());
 	}
 }
