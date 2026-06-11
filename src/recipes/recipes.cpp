@@ -19,7 +19,6 @@ void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list);
 std::vector<Recipe> getRecipes(std::string& filePath) {
 	std::vector<Recipe> parsedRecipes;
 
-	// open the .json file
 	std::filesystem::path jsonFilePath(filePath);
 	std::ifstream file(jsonFilePath);
 	if (!file.is_open()) {
@@ -39,7 +38,7 @@ std::vector<Recipe> getRecipes(std::string& filePath) {
 	file.close();
 
 
-	// iterate through sfData.json
+	// iterate through Docs.json / en-US.json
 	for (int i = 0; i < docs.size(); i++) {
 		auto it = docs[i].find("NativeClass");
 		if (it == docs[i].end() ||
@@ -64,15 +63,14 @@ void extractRecipes(std::vector<Recipe>& parsedRecipes, json& recipeArr) {
 			const std::string jsonKey = it.key();
 			const std::string jsonValue = it.value().get<std::string>();
 
-			if (jsonKey == "mDisplayName") {
+			if (jsonKey == "mDisplayName")
 				recipeName = jsonValue;
-			} else if (jsonKey == "mManufactoringDuration") {
+			else if (jsonKey == "mManufactoringDuration")
 				manDur = std::stod(jsonValue);
-			} else if (jsonKey == "mIngredients") {
+			else if (jsonKey == "mIngredients")
 				identifyItems(jsonValue, input);
-			} else if (jsonKey == "mProduct") {
+			else if (jsonKey == "mProduct")
 				identifyItems(jsonValue, output);
-			}
 		}
 
 		parsedRecipes.emplace_back(manDur, input, output);
