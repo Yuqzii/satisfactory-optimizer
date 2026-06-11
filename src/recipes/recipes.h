@@ -15,4 +15,4 @@ struct Recipe {
 	std::vector<RecipeItem> products;
 };
 
-std::map<std::string, Recipe> getRecipes(std::string filePath);
+std::vector<Recipe> getRecipes(std::string& filePath);

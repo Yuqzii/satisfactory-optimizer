@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
-#include <map>
 #include <nlohmann/json.hpp>
 #include <sstream>
 #include <string>
@@ -14,14 +13,14 @@
 
 using json = nlohmann::json;
 
-void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& recipeArr);
+void extractRecipes(std::vector<Recipe>& parsedRecipes, json& recipeArr);
 void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list);
 
-std::map<std::string, Recipe> getRecipes(std::string ans) {
-	std::map<std::string, Recipe> parsedRecipes;
+std::vector<Recipe> getRecipes(std::string& filePath) {
+	std::vector<Recipe> parsedRecipes;
 
 	// open the .json file
-	std::filesystem::path jsonFilePath(ans);
+	std::filesystem::path jsonFilePath(filePath);
 	std::ifstream file(jsonFilePath);
 	if (!file.is_open()) {
 		std::cerr << "failed to find or open " << jsonFilePath.filename() << '\n' << std::endl;
@@ -54,7 +53,7 @@ std::map<std::string, Recipe> getRecipes(std::string ans) {
 	return parsedRecipes;
 }
 
-void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& recipeArr) {
+void extractRecipes(std::vector<Recipe>& parsedRecipes, json& recipeArr) {
 	for (std::size_t j = 0; j < recipeArr.size(); j++) {
 		std::string recipeName;
 		std::vector<RecipeItem> input;
@@ -76,7 +75,7 @@ void extractRecipes(std::map<std::string, Recipe>& parsedRecipes, json& recipeAr
 			}
 		}
 
-		parsedRecipes[recipeName] = {manDur, input, output};
+		parsedRecipes.emplace_back(manDur, input, output);
 	}
 }
 
@@ -97,7 +96,6 @@ void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list) 
 
 		list.emplace_back(amount, itemName);
 
-		// update indexes
 		factoryGameIndx = stringVal.find(factoryGameStr, factoryGameIndx + factoryGameStr.length());
 		amountIndx = stringVal.find(amountStr, amountIndx + amountStr.length());
 	}
