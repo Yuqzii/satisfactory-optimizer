@@ -13,8 +13,10 @@
 
 using json = nlohmann::json;
 
+namespace {
 void extractRecipes(std::vector<Recipe>& parsedRecipes, json& recipeArr);
 void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list);
+}  // namespace
 
 std::vector<Recipe> getRecipes(std::string& filePath) {
 	std::vector<Recipe> parsedRecipes;
@@ -52,6 +54,7 @@ std::vector<Recipe> getRecipes(std::string& filePath) {
 	return parsedRecipes;
 }
 
+namespace {
 void extractRecipes(std::vector<Recipe>& parsedRecipes, json& recipeArr) {
 	for (std::size_t j = 0; j < recipeArr.size(); j++) {
 		std::string recipeName;
@@ -98,3 +101,4 @@ void identifyItems(const std::string& stringVal, std::vector<RecipeItem>& list) 
 		amountIndx = stringVal.find(amountStr, amountIndx + amountStr.length());
 	}
 }
+}  // namespace
