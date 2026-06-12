@@ -1,13 +1,39 @@
 #include "simplex/simplex.h"
 
 #include <limits>
+#include <numeric>
 
-void Tableau::optimize() {
+namespace simplex {
+
+Tableau::Tableau(
+    const std::vector<double>& objective, const std::vector<double>& rhs,
+    const math::Matrix& constraints
+)
+    : objective{objective},
+      rhs{rhs},
+      contribution(constraints.getCols()),
+      basis(constraints.getRows()),
+      matrix{constraints} {
+	assert(objective.size() == matrix.getCols());
+	assert(rhs.size() == matrix.getRows());
+
+	// Set all the slack variables to be basic.
+	std::iota(basis.begin(), basis.end(), matrix.getCols() - matrix.getRows());
+
+	calculateContribution();
+}
+
+std::expected<void, Tableau::Error> Tableau::optimize() {
 	while (const auto pivotCol = findPivotColumn()) {
-		const std::size_t pivotRow = findPivotRow(*pivotCol);
+		const auto pivotRow = findPivotRow(pivotCol.value());
 
-		pivot(*pivotCol, pivotRow);
+		if (!pivotRow.has_value())
+			return std::unexpected(Tableau::Error::Unbounded);
+
+		pivot(pivotCol.value(), pivotRow.value());
 	}
+
+	return {};
 }
 
 std::optional<std::size_t> Tableau::findPivotColumn() const {
@@ -28,17 +54,23 @@ std::optional<std::size_t> Tableau::findPivotColumn() const {
 	return best;
 }
 
-std::size_t Tableau::findPivotRow(std::size_t col) const {
+std::optional<std::size_t> Tableau::findPivotRow(std::size_t col) const {
 	std::size_t best = -1;
 	double minRatio = std::numeric_limits<double>::max();
 
 	for (std::size_t i = 0; i < rhs.size(); i++) {
+		if (matrix[i, col] <= 0)
+			continue;
+
 		double cur = rhs[i] / matrix[i, col];
 		if (cur < minRatio) {
 			best = i;
 			minRatio = cur;
 		}
 	}
+
+	if (best == -1)
+		return std::nullopt;
 
 	return best;
 }
@@ -71,3 +103,5 @@ void Tableau::calculateContribution() {
 			contribution[c] += objective[basis[r]] * matrix[r, c];
 	}
 }
+
+}  // namespace simplex
