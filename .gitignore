@@ -1,4 +1,8 @@
+.vscode/
+
 build/
 .cache/
+
+sfData.json
 
 .DS_Store
