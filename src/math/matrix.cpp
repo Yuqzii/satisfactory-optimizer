@@ -1,18 +1,15 @@
 #include "math/matrix.h"
 
+#include <algorithm>
 #include <cassert>
 
 namespace math {
 
 Matrix::Matrix(const std::vector<std::vector<double>>& matrix)
-    : rows{matrix.size()}, cols{(!matrix.empty()) ? matrix[0].size() : 0}, data(rows * cols) {
-	// All rows must have same amount of columns.
-	for (std::size_t i = 1; i < matrix.size(); i++)
-		assert(matrix[i].size() == cols);
-
+    : rows{matrix.size()}, cols{findMaxCols(matrix)}, data(rows * cols) {
 	// Flatten 2D matrix param to 1D vector.
 	for (std::size_t r = 0; r < rows; r++)
-		for (std::size_t c = 0; c < cols; c++)
+		for (std::size_t c = 0; c < matrix[r].size(); c++)
 			data[r * cols + c] = matrix[r][c];
 }
 
@@ -28,6 +25,14 @@ void Matrix::addScaledRow(std::size_t targetRow, std::size_t sourceRow, double x
 
 	for (std::size_t c = 0; c < cols; c++)
 		data[targetRowStart + c] += data[sourceRowStart + c] * x;
+}
+
+std::size_t Matrix::findMaxCols(const std::vector<std::vector<double>>& matrix) {
+	std::size_t res = 0;
+	for (std::size_t r = 0; r < matrix.size(); r++)
+		res = std::max(res, matrix[r].size());
+
+	return res;
 }
 
 }  // namespace math

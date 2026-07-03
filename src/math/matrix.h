@@ -32,6 +32,8 @@ private:
 	std::size_t rows = 0;
 	std::size_t cols = 0;
 	std::vector<double> data;
+
+	static std::size_t findMaxCols(const std::vector<std::vector<double>>& matrix);
 };
 
 }  // namespace math
