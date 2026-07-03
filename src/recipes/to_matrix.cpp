@@ -4,27 +4,33 @@
 #include <iterator>
 #include <vector>
 
+namespace {
+
+std::vector<std::size_t> itemsToIdx(
+    const std::vector<RecipeItem>& items, ItemManager& itemManager
+) {
+	std::vector<std::size_t> res;
+	res.reserve(items.size());
+
+	// Get the item indices of all items.
+	std::transform(
+	    items.begin(), items.end(), std::back_inserter(res),
+	    [&itemManager](const RecipeItem& item) { return itemManager[item.name]; }
+	);
+
+	return res;
+}
+
+}  // namespace
+
 math::Matrix recipesToMatrix(const std::vector<Recipe>& recipes, ItemManager& itemManager) {
 	std::vector<std::vector<double>> matrix;
 
 	for (const auto& recipe : recipes) {
-		auto initFunc = [&itemManager](const std::vector<RecipeItem>& vec) {
-			std::vector<std::size_t> temp;
-			temp.reserve(vec.size());
-
-			// Get the item indices of all items in vec.
-			std::transform(
-			    vec.begin(), vec.end(), std::back_inserter(temp),
-			    [&itemManager](const RecipeItem& item) { return itemManager[item.name]; }
-			);
-
-			return temp;
-		};
-
 		// Get all the indices of items first, such that we don't need to resize the newRow vector
 		// because we already know the maximum item index.
-		const std::vector<std::size_t> ingredientIdx = initFunc(recipe.ingredients);
-		const std::vector<std::size_t> productIdx = initFunc(recipe.products);
+		const std::vector<std::size_t> ingredientIdx = itemsToIdx(recipe.ingredients, itemManager);
+		const std::vector<std::size_t> productIdx = itemsToIdx(recipe.products, itemManager);
 
 		std::vector<double> newRow(itemManager.size());
 		for (std::size_t i = 0; i < recipe.ingredients.size(); i++) {
