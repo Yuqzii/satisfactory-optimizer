@@ -7,7 +7,7 @@
 namespace {
 
 std::vector<std::size_t> itemsToIdx(
-    const std::vector<RecipeItem>& items, ItemManager& itemManager
+    const std::span<const RecipeItem> items, ItemManager& itemManager
 ) {
 	std::vector<std::size_t> res;
 	res.reserve(items.size());
@@ -23,7 +23,7 @@ std::vector<std::size_t> itemsToIdx(
 
 }  // namespace
 
-math::Matrix recipesToMatrix(const std::vector<Recipe>& recipes, ItemManager& itemManager) {
+math::Matrix recipesToMatrix(const std::span<const Recipe> recipes, ItemManager& itemManager) {
 	std::vector<std::vector<double>> matrix;
 
 	for (const auto& recipe : recipes) {

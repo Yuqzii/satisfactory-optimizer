@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <map>
+#include <span>
 #include <string>
 #include <string_view>
 
@@ -26,4 +27,4 @@ private:
 	std::map<std::string, std::size_t, std::less<>> data;
 };
 
-math::Matrix recipesToMatrix(const std::vector<Recipe>& recipes, ItemManager& itemManager);
+math::Matrix recipesToMatrix(std::span<const Recipe> recipes, ItemManager& itemManager);
