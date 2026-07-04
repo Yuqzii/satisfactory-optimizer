@@ -35,11 +35,11 @@ math::Matrix recipesToMatrix(const std::span<const Recipe> recipes, ItemManager&
 		std::vector<double> newRow(itemManager.size());
 		for (std::size_t i = 0; i < recipe.ingredients.size(); i++) {
 			double res = static_cast<double>(recipe.ingredients[i].amount) / recipe.duration;
-			newRow[ingredientIdx[i]] = -res;  // Negative because it consumes ingredients.
+			newRow[ingredientIdx[i]] -= res;  // Negative because it consumes ingredients.
 		}
 		for (std::size_t i = 0; i < recipe.products.size(); i++) {
 			double res = static_cast<double>(recipe.products[i].amount) / recipe.duration;
-			newRow[productIdx[i]] = res;  // Positive because it produces the products.
+			newRow[productIdx[i]] += res;  // Positive because it produces the products.
 		}
 
 		matrix.push_back(std::move(newRow));
