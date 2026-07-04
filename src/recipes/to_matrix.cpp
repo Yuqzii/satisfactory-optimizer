@@ -29,7 +29,9 @@ math::Matrix recipesToMatrix(const std::span<const Recipe> recipes, ItemManager&
 		itemsToIdx(recipe.products, itemManager, std::back_inserter(productIdx));
 	}
 
-	math::Matrix matrix{itemManager.size(), recipes.size()};
+	// Matrix has recipes + items columns because each item needs a slack variable as well.
+	math::Matrix matrix{itemManager.size(), recipes.size() + itemManager.size()};
+
 	for (std::size_t i = 0; i < recipes.size(); i++) {
 		for (std::size_t j = 0; j < recipes[i].ingredients.size(); j++) {
 			const double cur =
